@@ -1,0 +1,12 @@
+body{
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+
+.lessons-sidebar{
+	width: 100%;
+	outline: 1px solid black;
+	height: 100vh;
+}
