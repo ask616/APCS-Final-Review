@@ -89,24 +89,35 @@
 
 				var newRef = new Firebase("https://apcsfinalreview.firebaseio.com/2/1/problems");
 
-				newRef.once("value", function(snapshot) {
+				newRef.on("value", function(snapshot) {
 				  var counter = 1;
+				  var loopCount = 1;
 				  //console.log(snapshot);
+				  //console.log("ta");
+				  
 				  snapshot.forEach(function(childSnapshot){
+				  	console.log(snapshot.numChildren());
 				  	//console.log(childSnapshot.child(0).val());
 				  	var build = '<div class=problem><div class=title><h5 class="header-text subheader">Problem ' + counter + '</h5></div><br><br><br><p class=problem-text>'+childSnapshot.child(0).val()+'</p><br><br><a class="waves-effect waves-light btn answer-show" style=text-decoration:none>Show Answer</a><br><pre style=display:none>'+childSnapshot.child(1).val()+'</pre></div>';
 
 				  	//var build = "yd";
 				  	newContent = newContent + build;
 					counter++;
+					if(loopCount >= snapshot.numChildren()){
+						$(".content-container").html(newContent);
+						$(".sidebar,.content").niceScroll({cursorcolor:"#757575"});
+						return true;
+					}
+
+					loopCount++;
 				  })
 				}, function (errorObject) {
 				  console.log("The read failed: " + errorObject.code);
 				});
 				
-				$(".content-container").html(newContent);
+				
 
-
+				//$(this).click();
 			});
 
 
