@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Problem Submission</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen"/>
+	<link rel="stylesheet" href="submit_styles.css">
+</head>
+<body>
+
+	<nav class="blue darken-2">
+		<div class="nav-wrapper">
+			<div class="col s12">
+				<a href="#!" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review - Problem Submission Form</a>
+				<ul class="right side-nav" style="margin-left:30px">
+					<li><a href="index.html">Return</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<!-- problem set number, problems, name, lesson num -->
+
+		<b>Directions: </b>Fill out the following information and click <b>Submit</b> to add your problems. If you want to submit multiple problems for the same set, click <b>Add Problem</b>.
+
+		<div class="row form">
+			<form class="col s12">
+				<div class="row">
+					<div class="input-field col s6">
+						<input id="first_name" type="text" required>
+						<label for="first_name">First Name</label>
+					</div>
+					<div class="input-field col s6">
+						<input id="last_name" type="text" required>
+						<label for="last_name">Last Name</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<select id="lesson_select">
+							<option value="" disabled selected>Choose your lesson</option>
+							<option value="1">Lesson 1</option>
+							<option value="2">Lesson 2</option>
+							<option value="3">Lesson 3</option>
+						</select>
+					</div>
+					<div class="input-field col s6">
+						<input id="set_number" type="text" required>
+						<label for="set_number">Set Number</label>
+					</div>
+				</div>
+
+				<div class="problems">
+					<div class="problem-submission">
+						<div class="row">
+							<h5>Problem 1</h5>
+							<br>
+							<div class="input-field col s12">
+								<textarea id="problem-input1"></textarea>                
+								<label>Write your problem here:</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<textarea id="solution-input1"></textarea>                
+								<label>Enter your solution here (Enter tabs as 4 spaces):</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</form>
+		</div>
+
+		<div class="form-buttons">
+			<button class="btn waves-effect waves-light form-button submit-button" type="submit" name="action">Submit
+				<i class="mdi-content-send right"></i>
+			</button>
+			<button class="btn waves-effect waves-light form-button pull-right problem-add" type="submit" name="action">Add Problem
+				<i class="mdi-content-add right"></i>
+			</button>
+		</div>
+	</div>
+
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
+	<script type="text/javascript" src="jquery.nicescroll.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var counter = 1;
+
+			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
+
+			$(".container").niceScroll({cursorcolor:"#757575"});
+			$(".problem-add").click(function(){
+				$('.problems').append('<div class=problem-submission><div class=row><h5>Problem '+(counter+1)+'</h5><br><div class="input-field col s12"><textarea id=problem-input'+(counter+1)+'></textarea><label>Write your problem here:</label></div></div><div class=row><div class="input-field col s12"><textarea id=solution-input'+(counter+1)+'></textarea><label>Enter your solution here (Enter tabs as 4 spaces):</label></div></div></div>');
+				counter++;
+
+				console.log($("#code-test1").prop('checked'));
+			});
+			$(".submit-button").click(function(){
+				var name = $("#first_name").val() + " " +$("#last_name").val();
+				var lesson = $("#lesson_select").val();
+				var set = $("#set_number").val();
+				//var id = lesson+"-"+set;
+				var problems = [];
+				for(var i=0;i<counter;i++){
+					//[problem,solution]
+					var tuple = [parse($("#problem-input"+(i+1)).val()),parse($("#solution-input"+(i+1)).val())];
+					problems.push(tuple);
+				}
+
+				ref.child(lesson).child(set).set({
+				    name: name,
+				    problems:problems
+				});
+
+			});
+
+		});
+
+		function parse(origString){
+			var newLinesRemoved = origString.trim().replace(/\n/g, "&#10;");
+			var tabsReplaced = newLinesRemoved.replace(/\s{4}/g,"&#9;");
+			return tabsReplaced;
+			//"so my name is areeb&#10;    system.out.println();&#10;        hi();"
+			//"so my name is areeb&#10;&#9;system.out.println();&#10;&#9;&#9;hi();"
+		}
+
+	</script> 
+
+
+</body>
+</html>

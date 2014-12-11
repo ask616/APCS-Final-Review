@@ -1,13 +1,64 @@
 body{
 	margin: 0;
 	height: 100%;
-	
 	overflow: hidden;
+	background-color: #fafafa;
 }
 
 
-.lessons-sidebar{
-	width: 100%;
-	outline: 1px solid black;
-	height: 100vh;
+.sidebar{
+	padding-left: 20px;
+	overflow: scroll;
+	height: 90vh;
+	z-index: 0;
+}
+
+.content{
+	overflow: scroll;
+	height: 90vh
+}
+
+nav{
+	z-index: 1;
+	position: relative;
+}
+
+.card-panel{
+	cursor: pointer;
+}
+
+.content-container{
+	margin-top: 50px;
+}
+
+.title{
+	display: inline;
+	float: left;
+	clear: both;
+}
+
+/*.header-text{
+	display: inline;
+}*/
+
+.waves-light:hover{
+	color: white;
+}
+
+#set-title{
+	font-family: "Roboto";
+	font-weight: 300;
+}
+
+li{
+	font-size: 13px !important
+}
+
+.problem{
+	padding-bottom: 50px;
+	margin-top: 10px;
+}
+
+.problem-text{
+	margin-top: 10px;
 }

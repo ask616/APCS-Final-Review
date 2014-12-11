@@ -1,0 +1,59 @@
+body{
+	background-color: #e0e0e0;
+	overflow: hidden;
+}
+
+.container{
+	background-color: #fafafa;
+	font-family: "Roboto";
+	font-size: 16px;
+	padding-top: 100px;
+	overflow: scroll;
+	height: 90vh
+}
+
+.side-nav li:hover{
+	background-color: #1e88e5;
+	
+}
+
+.side-nav li a:hover{
+	text-decoration: none;
+	color: white;
+}
+
+.form{
+	margin-top: 30px;
+}
+
+.problem-submission{
+	margin-top: 40px;
+}
+
+.problem-sbubmission h5{
+	padding-bottom: 20px;
+}
+
+/*.code-checkbox{
+	position: relative;
+	left: 20px;
+}*/
+
+.add-problem{
+	position: fixed;
+	z-index: 10000;
+	bottom: 20px;
+	right: 20px;
+}
+
+.form-button{
+	display: inline;
+}
+
+.form-button:hover{
+	color: white;
+}
+
+.btn:focus{
+	color: white
+	}

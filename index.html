@@ -4,40 +4,148 @@
 	<title>APCS Final Review</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen"/>
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-		<div class="row">
-			<div class="col-md-2 sidebar text-center">
-				<table style="vertical-align:middle;width:100%;height:100%;">
-					<tr style="height:100%;">
-						<td>
-							<h2>hi</h2>
-			                <ul class="nav nav-pills nav-stacked">
-			                    <li><a>Home</a>
-			                    	 <p class="collapse">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-			                    </li>
-			                    <li><a >Log Out</a></li>
-			                    <li><a >Problem Sets</a></li>
-			                </ul>
-			            </td>
-			        </tr>
-			    </table>
+
+	<!-- Dropdown Structure -->
+	<ul id='lessonDropdown' class='dropdown-content' id="dropdown-content">
+		<li class="link-lesson" id="link-lesson-1"><a href="#!">One</a></li>
+		<li class="link-lesson" id="link-lesson-2"><a href="#!">Two</a></li>
+		<li class="link-lesson" id="link-lesson-3"><a href="#!">Three</a></li>
+		<li class="link-lesson" id="link-lesson-4"><a href="#!">Four</a></li>
+		<li class="link-lesson" id="link-lesson-5"><a href="#!">Five</a></li>
+		<li class="link-lesson" id="link-lesson-6"><a href="#!">Six</a></li>
+		<li class="link-lesson" id="link-lesson-7"><a href="#!">Seven</a></li>
+		<li class="link-lesson" id="link-lesson-8"><a href="#!">Eight</a></li>
+		<li class="link-lesson" id="link-lesson-9"><a href="#!">Nine</a></li>
+	</ul>
+	<nav class="blue darken-2">
+		<div class="nav-wrapper">
+			<div class="col s12">
+				<a href="#!" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review</a>
+				<ul class="right side-nav" style="margin-left:30px">
+					<li style="margin-right:40px"><a class="dropdown-button" href="#" data-activates='lessonDropdown'><span style="position:relative; top:-8px;left:-3px">Lesson</span><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+				</ul>
 			</div>
-			<div class="col-md-5 col-offset-5">
-				<div class="lessons-sidebar">
-					hi
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col l2 sidebar">
+			<h3 style="margin-top:100px">Problems</h3>
+			<div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 1</span>
+		    </div>
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 2</span>
+		    </div>
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 3</span>
+		    </div>
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 4</span>
+		    </div>
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 5</span>
+		    </div>
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 6</span>
+		    </div>
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		        <span class="white-text" style="font-size:24px;" id="set-title">Set 7</span>
+		    </div>
+		</div>
+
+		<div class="col s9 content">
+			<div class="container content-container">
+				<h2 class="header-text" style="padding-bottom:30px">Set 1</h2>
+				<div class="problem">
+					<div class="title">
+						<h5 class="header-text subheader">Problem 1</h5>
+					</div>
+
+					<br><br><br>
+
+					<p class="problem-text">I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.</p>
+
+					<br><br>
+
+					 <a class="waves-effect waves-light btn answer-show" style="text-decoration:none">Show Answer</a>
+					 <br>
+					<pre style="display:none;">System.out.println("hello world")&#x0A;&#9;System.out.println("hello world") hello&#x0A;System.out.println("hello world") hello&#x0A;System.out.println("hello world") hello&#x0A;System.out.println("hello world") hello&#x0A;System.out.println("hello world") hello</pre>
+				</div>
+
+				<div class="problem">
+					<div class="title">
+						<h5 class="header-text subheader" >Problem 1</h5>
+					</div>
+
+					<br><br><br>
+
+					<p class="problem-text">I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.</p>
+
+					<br><br>
+
+					 <a class="waves-effect waves-light btn answer-show" style="text-decoration:none">Show Answer</a>
+					 <br>
+					<pre style="display:none;">System.out.println("hello world") hello
+	System.out.println("hello world") hello</pre>
 				</div>
 			</div>
-			<div class="col-md-5 col-offset-7">
-				<div class="lessons-sidebar">
-					hi
-				</div>
-			</div>
+		</div>
 	</div>
 
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="jquery.nicescroll.min.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
 
-	 <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
+
+			//set defaults
+			var lesson = 1;
+			var set = 1;
+			
+			$(".link-lesson").click(function(){
+				var num = $(this).attr('id').replace(/link-lesson-/,"");
+				console.log(parseInt(num));
+
+			$(".content-container").html(
+
+
+			)
+
+
+			});
+
+
+			ref.on("value", function(snapshot) {
+			  console.log(snapshot.child('2-4').child('name').val());
+			}, function (errorObject) {
+			  console.log("The read failed: " + errorObject.code);
+			});
+
+
+
+
+
+			$('.dropdown-button').dropdown();
+			$('.btn').click(function(){
+				$(".sidebar,.content").niceScroll({cursorcolor:"#757575"});
+			});
+
+			$(".sidebar,.content").niceScroll({cursorcolor:"#757575"});
+
+			$('.answer-show').click(function() {
+		        $('pre').slideToggle("fast");
+		    });
+		});
+	</script> 
 </body>
 </html>
