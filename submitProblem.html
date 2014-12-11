@@ -21,7 +21,7 @@
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container" id="scrollbar">
 
 		<!-- problem set number, problems, name, lesson num -->
 
@@ -40,17 +40,13 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="input-field col s6">
+					<div class="input-field col s12">
 						<select id="lesson_select">
 							<option value="" disabled selected>Choose your lesson</option>
 							<option value="1">Lesson 1</option>
 							<option value="2">Lesson 2</option>
 							<option value="3">Lesson 3</option>
 						</select>
-					</div>
-					<div class="input-field col s6">
-						<input id="set_number" type="text" required>
-						<label for="set_number">Set Number</label>
 					</div>
 				</div>
 
@@ -93,14 +89,12 @@
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
-	<script type="text/javascript" src="jquery.nicescroll.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var counter = 1;
 
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 
-			$(".container").niceScroll({cursorcolor:"#757575"});
 			$(".problem-add").click(function(){
 				$('.problems').append('<div class=problem-submission><div class=row><h5>Problem '+(counter+1)+'</h5><br><div class="input-field col s12"><textarea id=problem-input'+(counter+1)+'></textarea><label>Write your problem here:</label></div></div><div class=row><div class="input-field col s12"><textarea id=solution-input'+(counter+1)+'></textarea><label>Enter your solution here (Enter tabs as 4 spaces):</label></div></div></div>');
 				counter++;
@@ -108,21 +102,25 @@
 				console.log($("#code-test1").prop('checked'));
 			});
 			$(".submit-button").click(function(){
-				var name = $("#first_name").val() + " " +$("#last_name").val();
-				var lesson = $("#lesson_select").val();
-				var set = $("#set_number").val();
-				//var id = lesson+"-"+set;
-				var problems = [];
-				for(var i=0;i<counter;i++){
-					//[problem,solution]
-					var tuple = [parse($("#problem-input"+(i+1)).val()),parse($("#solution-input"+(i+1)).val())];
-					problems.push(tuple);
-				}
+				var lesson = $("#lesson_select").val().trim();
+				var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
+				var set;
+				ref.child(lesson).once("value",function(snapshot){
+					set = snapshot.numChildren()+1;
+					var name = $("#first_name").val().trim() + " " +$("#last_name").val().trim();
+					var problems = [];
+					for(var i=0;i<counter;i++){
+						//[problem,solution]
+						var tuple = [parse($("#problem-input"+(i+1)).val().trim()),parse($("#solution-input"+(i+1)).val().trim())];
+						problems.push(tuple);
+					}
 
-				ref.child(lesson).child(set).set({
-				    name: name,
-				    problems:problems
+					ref.child(lesson).child(set).set({
+					    name: name,
+					    problems:problems
+					});
 				});
+				
 
 			});
 

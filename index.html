@@ -10,7 +10,6 @@
 </head>
 <body>
 
-	<!-- Dropdown Structure -->
 	<ul id='lessonDropdown' class='dropdown-content' id="dropdown-content">
 		<li class="link-lesson" id="link-lesson-1"><a href="#!">One</a></li>
 		<li class="link-lesson" id="link-lesson-2"><a href="#!">Two</a></li>
@@ -22,7 +21,7 @@
 		<li class="link-lesson" id="link-lesson-8"><a href="#!">Eight</a></li>
 		<li class="link-lesson" id="link-lesson-9"><a href="#!">Nine</a></li>
 	</ul>
-	<nav class="blue darken-2">
+	<nav class="blue darken-2" style="position:fixed">
 		<div class="nav-wrapper">
 			<div class="col s12">
 				<a href="#!" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review</a>
@@ -33,32 +32,14 @@
 		</div>
 	</nav>
 	<div class="row">
-		<div class="col l2 sidebar">
+		<div class="col l2 sidebar" id="scrollbar">
 			<h3 style="margin-top:100px">Problems</h3>
-			<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-1">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 1</span>
-		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-2">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 2</span>
-		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-3">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 3</span>
-		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-4">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 4</span>
-		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-5">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 5</span>
-		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-6">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 6</span>
-		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-7">
-		        <span class="white-text" style="font-size:24px;" id="set-title">Set 7</span>
-		    </div>
+			<div class="panels">
+
+			</div>
 		</div>
 
-		<div class="col s9 content">
+		<div class="col s9 content" id="scrollbar">
 			<div class="container content-container">
 
 			</div>
@@ -74,83 +55,112 @@
 	<script type="text/javascript">
 		var newContent;
 
+		function initSetSetup(){
+			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
+			var panels_content = "";
+				var counter = 1;
+
+				ref.child("1").on("value", function(snapshot) {
+					console.log(snapshot.numChildren());
+					snapshot.forEach(function(childSnapshot){
+				  		panels_content+= '<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-'+counter+'" style="margin-left:5px"><span class="white-text" style="font-size:24px;" id="set-title">Set '+counter+'</span></div>';
+				  		if(counter >= snapshot.numChildren()){
+							$(".panels").html(panels_content);
+						}
+						$(".set-panel").click(function(){
+							set = parseInt($(this).attr('id').replace(/set-/,""));
+							reload(1,set);
+						});
+						counter++;
+					});
+				});
+		}
+
 		function reload(lesson,set){
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
+			var newRef = new Firebase("https://apcsfinalreview.firebaseio.com/"+lesson+"/"+set);
+			newRef.once("value",function(basedSnapshot){
+				newContent = '<div style="margin-top:50px;padding-bottom:30px;"><h2 class="header-text" style="padding-bottom:30px;padding-top:30px;display:inline">Set ' + set+ ' </h2><h5 style="display:inline;color:#bdbdbd">by '+basedSnapshot.child("name").val() + '</h5></div>';
 
-			newContent = '<h2 class="header-text" style="padding-bottom:30px">Set ' + set+ '</h2>';
 
-				var newRef = new Firebase("https://apcsfinalreview.firebaseio.com/"+lesson+"/"+set+"/problems");
 
-				newRef.on("value", function(snapshot) {
-				  var counter = 1;
-				  var loopCount = 1;
-				  //console.log(snapshot);
-				  //console.log("ta");
-				  
-				  snapshot.forEach(function(childSnapshot){
-				  	console.log(snapshot.numChildren());
-				  	//console.log(childSnapshot.child(0).val());
-				  	var build = '<div class=problem><div class=title><h5 class="header-text subheader">Problem ' + counter + '</h5></div><br><br><br><p class=problem-text>'+childSnapshot.child(0).val()+'</p><br><br><a class="waves-effect waves-light btn answer-show" style=text-decoration:none>Show Answer</a><br><pre style=display:none>'+childSnapshot.child(1).val()+'</pre></div>';
+				newRef.child('problems').on("value", function(snapshot) {
+			  var counter = 1;
+			  var loopCount = 1;
+			  
+			  snapshot.forEach(function(childSnapshot){
+			  	var build = '<div class=problem><div class=title><h5 class="header-text subheader">Problem ' + counter + '</h5></div><br><br><br><p class=problem-text>'+childSnapshot.child(0).val()+'</p><br><br><a class="waves-effect waves-light btn answer-show" id="answer-'+counter+'" style=text-decoration:none>Show Answer</a><br><pre id="pre-'+counter+'" style=display:none>'+childSnapshot.child(1).val()+'</pre></div>';
 
-				  	//var build = "yd";
-				  	newContent = newContent + build;
-					counter++;
-					if(loopCount >= snapshot.numChildren()){
-						$(".content-container").html(newContent);
-						$(".sidebar,.content").niceScroll({cursorcolor:"#757575"});
-						return true;
-					}
+			  	newContent = newContent + build;
+				counter++;
+				if(loopCount >= snapshot.numChildren()){
+					$(".content-container").html(newContent);
+					
 
-					loopCount++;
-				  })
-				}, function (errorObject) {
-				  console.log("The read failed: " + errorObject.code);
-				});
+					$(".answer-show").click(function() {
+						console.log("here");
+						var counter = $(this).attr('id').replace(/answer-/,"");
+						console.log("here");
+				        $('#pre-'+counter).slideToggle("fast");
+				        console.log('#pre-'+counter);
+				    });
+
+				    console.log("yo");
+
+					return true;
+				}
+
+				loopCount++;
+			  })
+			}, function (errorObject) {
+			  console.log("The read failed: " + errorObject.code);
+			});
+
+
+			});
+			
+
+	
+
+			
 		}
 
 		$(document).ready(function(){
 			reload(1,1);
+			initSetSetup();
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
-			//var newContent;
-			//set defaults
 			var lesson = 1;
 			var set = 1;
 			$(".link-lesson").click(function(){
 				lesson = parseInt($(this).attr('id').replace(/link-lesson-/,""));
-				//console.log(parseInt(num));
 				var numInWords = ["One",'Two','Three','Four','Five','Six','Seven','Eight','Nine']
 				$("#lessonNum").html(numInWords[lesson-1]);
 				reload(lesson,1);
+				var panels_content = "";
+				var counter = 1;
 
+				ref.child(""+lesson).on("value", function(snapshot) {
+					console.log(snapshot.numChildren());
+					snapshot.forEach(function(childSnapshot){
+				  		panels_content+= '<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-'+counter+'" style="margin-left:5px"><span class="white-text" style="font-size:24px;" id="set-title">Set '+counter+'</span></div>';
+				  		if(counter >= snapshot.numChildren()){
+							$(".panels").html(panels_content);
+						}
+						$(".set-panel").click(function(){
+							set = parseInt($(this).attr('id').replace(/set-/,""));
+							console.log("hello");
+							reload(lesson,set);
+						});
 
-				//$(this).click();
+						counter++;
+					});
+				});
+
 			});
-
-			$(".set-panel").click(function(){
-				set = parseInt($(this).attr('id').replace(/set-/,""));
-				reload(lesson,set);
-			});
-
-			// ref.on("value", function(snapshot) {
-			//   console.log(snapshot.child('2-4').child('name').val());
-			// }, function (errorObject) {
-			//   console.log("The read failed: " + errorObject.code);
-			// });
-
-
-
-
 
 			$('.dropdown-button').dropdown();
-			$('.btn').click(function(){
-				$(".sidebar,.content").niceScroll({cursorcolor:"#757575"});
-			});
 
-			$(".sidebar,.content").niceScroll({cursorcolor:"#757575"});
 
-			$('.answer-show').click(function() {
-		        $('pre').slideToggle("fast");
-		    });
 		});
 	</script> 
 </body>
