@@ -27,7 +27,7 @@
 			<div class="col s12">
 				<a href="#!" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review</a>
 				<ul class="right side-nav" style="margin-left:30px">
-					<li style="margin-right:40px"><a class="dropdown-button" href="#" data-activates='lessonDropdown'><span style="position:relative; top:-8px;left:-3px">Lesson</span><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+					<li style="margin-right:40px"><a class="dropdown-button" href="#" data-activates='lessonDropdown'><span style="position:relative; top:-8px;left:-3px">Lesson <span id="lessonNum">One</span></span><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
 				</ul>
 			</div>
 		</div>
@@ -35,25 +35,25 @@
 	<div class="row">
 		<div class="col l2 sidebar">
 			<h3 style="margin-top:100px">Problems</h3>
-			<div class="card-panel grey waves-effect waves-light text-center darken-3">
+			<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-1">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 1</span>
 		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-2">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 2</span>
 		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-3">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 3</span>
 		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-4">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 4</span>
 		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-5">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 5</span>
 		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-6">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 6</span>
 		    </div>
-		    <div class="card-panel grey waves-effect waves-light text-center darken-3">
+		    <div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-7">
 		        <span class="white-text" style="font-size:24px;" id="set-title">Set 7</span>
 		    </div>
 		</div>
@@ -72,22 +72,14 @@
 	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
 
 	<script type="text/javascript">
-	var newContent;
-		$(document).ready(function(){
+		var newContent;
 
+		function reload(lesson,set){
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
-			//var newContent;
-			//set defaults
-			var lesson = 1;
-			var set = 1;
-			$(".link-lesson").click(function(){
-				var num = $(this).attr('id').replace(/link-lesson-/,"");
-				//console.log(parseInt(num));
 
+			newContent = '<h2 class="header-text" style="padding-bottom:30px">Set ' + set+ '</h2>';
 
-				newContent = '<h2 class="header-text" style="padding-bottom:30px">Lesson ' + num+ '</h2>';
-
-				var newRef = new Firebase("https://apcsfinalreview.firebaseio.com/2/1/problems");
+				var newRef = new Firebase("https://apcsfinalreview.firebaseio.com/"+lesson+"/"+set+"/problems");
 
 				newRef.on("value", function(snapshot) {
 				  var counter = 1;
@@ -114,12 +106,30 @@
 				}, function (errorObject) {
 				  console.log("The read failed: " + errorObject.code);
 				});
-				
-				
+		}
+
+		$(document).ready(function(){
+			reload(1,1);
+			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
+			//var newContent;
+			//set defaults
+			var lesson = 1;
+			var set = 1;
+			$(".link-lesson").click(function(){
+				lesson = parseInt($(this).attr('id').replace(/link-lesson-/,""));
+				//console.log(parseInt(num));
+				var numInWords = ["One",'Two','Three','Four','Five','Six','Seven','Eight','Nine']
+				$("#lessonNum").html(numInWords[lesson-1]);
+				reload(lesson,1);
+
 
 				//$(this).click();
 			});
 
+			$(".set-panel").click(function(){
+				set = parseInt($(this).attr('id').replace(/set-/,""));
+				reload(lesson,set);
+			});
 
 			// ref.on("value", function(snapshot) {
 			//   console.log(snapshot.child('2-4').child('name').val());
