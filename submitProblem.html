@@ -8,14 +8,14 @@
 	<link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen"/>
 	<link rel="stylesheet" href="submit_styles.css">
 </head>
-<body>
+<body id="scrollbar">
 
 	<nav class="blue darken-2">
 		<div class="nav-wrapper">
 			<div class="col s12">
-				<a href="#!" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review - Problem Submission Form</a>
+				<a href="#" id="page-title" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review - Problem Submission Form</a>
 				<ul class="right side-nav" style="margin-left:30px">
-					<li><a href="index.html">Return</a></li>
+					<li style="margin-right:40px;"><a href="/">Return</a></li>
 				</ul>
 			</div>
 		</div>
@@ -43,9 +43,20 @@
 					<div class="input-field col s12">
 						<select id="lesson_select">
 							<option value="" disabled selected>Choose your lesson</option>
-							<option value="1">Lesson 1</option>
-							<option value="2">Lesson 2</option>
-							<option value="3">Lesson 3</option>
+							<option value="1-2"><a href="#">1 to 2</a></option>
+							<option value="3"><a href="#">3</a></option>
+							<option value="4-5"><a href="#">4 to 5</a></option>
+							<option value="6"><a href="#">6</a></option>
+							<option value="Binary"><a href="#">Binary</a></option>
+							<option value="7"><a href="#">7</a></option>
+							<option value="8"><a href="#">8</a></option>
+							<option value="9"><a href="#">9</a></option>
+							<option value="10"><a href="#">10</a></option>
+							<option value="11"><a href="#">11</a></option>
+							<option value="12"><a href="#">12</a></option>
+							<option value="13-14"><a href="#">13 to 14</a></option>
+							<option value="15"><a href="#">15</a></option>
+							<option value='16'><a href="#">16</a></option>
 						</select>
 					</div>
 				</div>
@@ -57,13 +68,13 @@
 							<br>
 							<div class="input-field col s12">
 								<textarea id="problem-input1"></textarea>                
-								<label>Write your problem here:</label>
+								<label>Write your problem here <a class="problem-modal-trigger modal-trigger" href="#problem-modal">(?)</a>:</label>
 							</div>
 						</div>
 						<div class="row">
 							<div class="input-field col s12">
-								<textarea id="solution-input1"></textarea>                
-								<label>Enter your solution here (Enter tabs as 4 spaces):</label>
+								<textarea id="solution-input1"></textarea>
+								<label>Enter your solution here (Enter tabs as 4 spaces) <a class="solution-modal-trigger modal-trigger" href="#solution-modal">(?)</a>:</label>
 							</div>
 						</div>
 					</div>
@@ -74,9 +85,9 @@
 		</div>
 
 		<div class="form-buttons">
-			<button class="btn waves-effect waves-light form-button submit-button" type="submit" name="action">Submit
-				<i class="mdi-content-send right"></i>
-			</button>
+
+			<a class="waves-effect waves-light btn modal-trigger submit-button submit-modal-trigger" style="color:white" href="#submitted-modal">Submit<i class="mdi-content-send right"></i></a>
+			<!-- <a class="waves-effect waves-light btn answer-show modal-trigger submit-button" style="color:white" id="answer-'+counter+'" style=text-decoration:none>Show Answer</a> -->
 			<button class="btn waves-effect waves-light form-button pull-right problem-add" type="submit" name="action">Add Problem
 				<i class="mdi-content-add right"></i>
 			</button>
@@ -84,6 +95,32 @@
 	</div>
 
 
+	<div id="problem-modal" class="modal" style="max-height:350px;">
+		<h4>Adding Problems</h4>
+		<p>Simply type in your problems into the textboxes below-keep in mind that how you format them here will be exactly how they'll show up on the viewing page. To add an image, just type in the <b>direct link to the image</b> surrounded by "img" tags as follows:</p>
+		<pre style="display:inline-block">&lt;img&gt;http://i.imgur.com/uEVSYHY.png&lt;/img&gt;</pre>
+		<br>
+		<p>While adding code, try to stick with using either 4 spaces in a row or pasting in tabs (you'll see that you can't press the tab key while filling out this form), and the indentation should be preserved.</p>
+		<br>
+		<a href="#" class="waves-effect btn modal_close green accent-4">got it</a>
+	</div>
+
+	<div id="solution-modal" class="modal" style="max-height:270px;">
+		<h4>Adding Solutions</h4>
+		<p>Basically repeat you did above, but you won't be able to paste in images for this section. Again, if you're pasting code, stick to either 4 spaces or pasting tabs, as these are the only ways that are being covered for indentation.</p>
+		<p>After submitting, you'll be given a 4-character alphanumeric password that you'll need to later be able to edit submissions</p>
+		<br>
+		<a href="#" class="waves-effect btn modal_close green accent-4">got it</a>
+	</div>
+
+	<div id="submitted-modal" class="modal" style="max-height:300px">
+		<h4>Problem(s) Submitted</h4>
+	    <p>Your work has been submitted. If you want to edit it later on, you'll need the code below to do so, so store it somewhere safe. Once the database has been updated, the button will be displayed in color.</p>
+	    <br>
+	    <h5 id="code" style="text-align:center"></h5>
+	    <br>
+	    <a href="#" class="waves-effect btn modal_close disabled" id="continue-button">Continue</a>
+	</div>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
@@ -91,48 +128,78 @@
 	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			$('.problem-modal-trigger,.solution-modal-trigger').leanModal();
+			$('.submit-modal-trigger').leanModal();
+
 			var counter = 1;
 
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 
 			$(".problem-add").click(function(){
-				$('.problems').append('<div class=problem-submission><div class=row><h5>Problem '+(counter+1)+'</h5><br><div class="input-field col s12"><textarea id=problem-input'+(counter+1)+'></textarea><label>Write your problem here:</label></div></div><div class=row><div class="input-field col s12"><textarea id=solution-input'+(counter+1)+'></textarea><label>Enter your solution here (Enter tabs as 4 spaces):</label></div></div></div>');
+				
+				$('.problems').append('<div class=problem-submission><div class=row><h5>Problem '+(counter+1)+'</h5><br><div class="input-field col s12"><textarea id=problem-input'+(counter+1)+'></textarea><label>Write your problem here <a class="problem-modal-trigger modal-trigger" href="#problem-modal">(?)</a>:</label></div></div><div class=row><div class="input-field col s12"><textarea id=solution-input'+(counter+1)+'></textarea><label>Enter your solution here (Enter tabs as 4 spaces) <a class="solution-modal-trigger modal-trigger" href="#solution-modal">(?)</a>:</label></div></div></div>');
 				counter++;
-
-				console.log($("#code-test1").prop('checked'));
+				$('.problem-modal-trigger,.solution-modal-trigger').leanModal();
+				//console.log($("#code-test1").prop('checked'));
 			});
 			$(".submit-button").click(function(){
+				var code = "";
+				var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+				for (var j = 0; j<4; j++)
+					code += chars[Math.round(Math.random() * (chars.length - 1))];
+
 				var lesson = $("#lesson_select").val().trim();
 				var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 				var set;
+
+				$("#code").html(code);
 				ref.child(lesson).once("value",function(snapshot){
 					set = snapshot.numChildren()+1;
 					var name = $("#first_name").val().trim() + " " +$("#last_name").val().trim();
 					var problems = [];
 					for(var i=0;i<counter;i++){
 						//[problem,solution]
-						var tuple = [parse($("#problem-input"+(i+1)).val().trim()),parse($("#solution-input"+(i+1)).val().trim())];
+						var tuple = [imageParse($("#problem-input"+(i+1)).val().trim()),parse($("#solution-input"+(i+1)).val().trim())];
 						problems.push(tuple);
 					}
 
 					ref.child(lesson).child(set).set({
 					    name: name,
-					    problems:problems
+					    problems:problems,
+					    code:code
+					},function(){
+						$("#continue-button").removeClass("disabled");
 					});
 				});
 				
 
 			});
 
+			$("#continue-button").click(function(){
+				toast('Redirecting...', 3000);
+			    	setTimeout(function(){
+			    		var url = "/";
+						$(location).attr('href',url);
+					}, 3000);
+			    });
+
 		});
 
 		function parse(origString){
 			var newLinesRemoved = origString.trim().replace(/\n/g, "&#10;");
-			var tabsReplaced = newLinesRemoved.replace(/\s{4}/g,"&#9;");
+			var tabsReplaced = newLinesRemoved.replace(/\s{4}/g,"&#9;").replace(/\t/g,"&#9;");
+
 			return tabsReplaced;
-			//"so my name is areeb&#10;    system.out.println();&#10;        hi();"
-			//"so my name is areeb&#10;&#9;system.out.println();&#10;&#9;&#9;hi();"
 		}
+
+		function imageParse(origString){
+			var openImageReplaced= origString.trim().replace(/<img>/g,"<img width=\"400px\" src=\"")
+			var closeImageReplaced = openImageReplaced.replace(/<\/img>/g,"\" />");
+
+			return closeImageReplaced;
+		}
+
 
 	</script> 
 

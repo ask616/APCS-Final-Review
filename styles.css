@@ -65,6 +65,9 @@ li{
 
 .problem-text{
 	margin-top: 10px;
+	font-family: "Helvetica Neue";
+	font-size: 14px;
+	background-color: none;
 }
 
 
@@ -83,4 +86,42 @@ li{
 #scrollbar::-webkit-scrollbar-thumb
 {
 	background-color: #000000;
+}
+
+nav{
+	background-color: #1976d2;
+}
+
+.side-nav li a:hover{
+	text-decoration: none;
+	background-color: #82b1ff;
+	color: white;
+	height: 64px;
+	-webkit-animation: myfirst .2s; /* Chrome, Safari, Opera */
+    animation: myfirst .2s;
+}
+
+@-webkit-keyframes myfirst {
+    from {background: #1976d2;}
+    to {background: #82b1ff;}
+}
+
+/* Standard syntax */
+@keyframes myfirst {
+    from {background: #1976d2;}
+    to {background: #82b1ff;}
+}
+
+.dropdown-content li{
+	padding: 0.6rem 0.6rem;
+	text-align: center;
+}
+
+.link-lesson a{
+	text-decoration: none;
+}
+
+#page-title{
+	font-weight: 300;
+	font-family: "Roboto"
 }

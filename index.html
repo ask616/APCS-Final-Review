@@ -11,30 +11,39 @@
 <body>
 
 	<ul id='lessonDropdown' class='dropdown-content' id="dropdown-content">
-		<li class="link-lesson" id="link-lesson-1"><a href="#!">One</a></li>
-		<li class="link-lesson" id="link-lesson-2"><a href="#!">Two</a></li>
-		<li class="link-lesson" id="link-lesson-3"><a href="#!">Three</a></li>
-		<li class="link-lesson" id="link-lesson-4"><a href="#!">Four</a></li>
-		<li class="link-lesson" id="link-lesson-5"><a href="#!">Five</a></li>
-		<li class="link-lesson" id="link-lesson-6"><a href="#!">Six</a></li>
-		<li class="link-lesson" id="link-lesson-7"><a href="#!">Seven</a></li>
-		<li class="link-lesson" id="link-lesson-8"><a href="#!">Eight</a></li>
-		<li class="link-lesson" id="link-lesson-9"><a href="#!">Nine</a></li>
+
+		<li class="link-lesson" id="link-lesson-1"><a href="#">1 to 2</a></li>
+		<li class="link-lesson" id="link-lesson-2"><a href="#">3</a></li>
+		<li class="link-lesson" id="link-lesson-3"><a href="#">4 to 5</a></li>
+		<li class="link-lesson" id="link-lesson-4"><a href="#">6</a></li>
+		<li class="link-lesson" id="link-lesson-5"><a href="#">Binary</a></li>
+		<li class="link-lesson" id="link-lesson-6"><a href="#">7</a></li>
+		<li class="link-lesson" id="link-lesson-7"><a href="#">8</a></li>
+		<li class="link-lesson" id="link-lesson-8"><a href="#">9</a></li>
+		<li class="link-lesson" id="link-lesson-9"><a href="#">10</a></li>
+		<li class="link-lesson" id="link-lesson-10"><a href="#">11</a></li>
+		<li class="link-lesson" id="link-lesson-11"><a href="#">12</a></li>
+		<li class="link-lesson" id="link-lesson-12"><a href="#">13 to 14</a></li>
+		<li class="link-lesson" id="link-lesson-13"><a href="#">15</a></li>
+		<li class="link-lesson" id="link-lesson-14"><a href="#">16</a></li>
+
+
 	</ul>
 	<nav class="blue darken-2" style="position:fixed">
 		<div class="nav-wrapper">
 			<div class="col s12">
-				<a href="#!" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review</a>
+				<a href="/" id="page-title" class="brand-logo" style="margin-left:30px;text-decoration:none">APCS Final Review</a>
 				<ul class="right side-nav" style="margin-left:30px">
-					<li style="margin-right:40px"><a class="dropdown-button" href="#" data-activates='lessonDropdown'><span style="position:relative; top:-8px;left:-3px">Lesson <span id="lessonNum">One</span></span><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+				<li><a href="/submit">Submit Problem</a></li>
+					<li style="margin-right:40px"><a class="dropdown-button" href="#" data-activates='lessonDropdown'><span style="position:relative; top:-8px;left:-3px">Lesson <span id="lessonNum">1-2</span></span><i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+					
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<div class="row">
 		<div class="col l2 sidebar" id="scrollbar">
-			<h3 style="margin-top:100px">Problems</h3>
-			<div class="panels">
+			<div style="margin-top:80px" class="panels">
 
 			</div>
 		</div>
@@ -49,7 +58,6 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="jquery.nicescroll.min.js"></script>
 	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
 
 	<script type="text/javascript">
@@ -60,8 +68,8 @@
 			var panels_content = "";
 				var counter = 1;
 
-				ref.child("1").on("value", function(snapshot) {
-					console.log(snapshot.numChildren());
+				ref.child("1-2").once("value", function(snapshot) {
+					//console.log(snapshot.numChildren());
 					snapshot.forEach(function(childSnapshot){
 				  		panels_content+= '<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-'+counter+'" style="margin-left:5px"><span class="white-text" style="font-size:24px;" id="set-title">Set '+counter+'</span></div>';
 				  		if(counter >= snapshot.numChildren()){
@@ -69,7 +77,8 @@
 						}
 						$(".set-panel").click(function(){
 							set = parseInt($(this).attr('id').replace(/set-/,""));
-							reload(1,set);
+
+							reload("1-2",set);
 						});
 						counter++;
 					});
@@ -84,28 +93,26 @@
 
 
 
-				newRef.child('problems').on("value", function(snapshot) {
+			newRef.child('problems').once("value", function(snapshot) {
 			  var counter = 1;
 			  var loopCount = 1;
 			  
 			  snapshot.forEach(function(childSnapshot){
-			  	var build = '<div class=problem><div class=title><h5 class="header-text subheader">Problem ' + counter + '</h5></div><br><br><br><p class=problem-text>'+childSnapshot.child(0).val()+'</p><br><br><a class="waves-effect waves-light btn answer-show" id="answer-'+counter+'" style=text-decoration:none>Show Answer</a><br><pre id="pre-'+counter+'" style=display:none>'+childSnapshot.child(1).val()+'</pre></div>';
+			  	var build = '<div class=problem><div class=title><h5 class="header-text subheader">Problem ' + counter + '</h5></div><br><br><br><pre class=problem-text style="background:none;border:none">'+childSnapshot.child(0).val()+'</pre><br><br><a class="waves-effect waves-light btn answer-show" id="answer-'+counter+'" style=text-decoration:none>Show Answer</a><br><pre id="pre-'+counter+'" style=display:none>'+childSnapshot.child(1).val()+'</pre></div>';
 
-			  	newContent = newContent + build;
+			  	if(childSnapshot.child(0).val().length > 0 && childSnapshot.child(1).val().length >0)
+			  		newContent = newContent + build;
+
 				counter++;
+
 				if(loopCount >= snapshot.numChildren()){
 					$(".content-container").html(newContent);
-					
 
 					$(".answer-show").click(function() {
-						console.log("here");
 						var counter = $(this).attr('id').replace(/answer-/,"");
-						console.log("here");
 				        $('#pre-'+counter).slideToggle("fast");
 				        console.log('#pre-'+counter);
 				    });
-
-				    console.log("yo");
 
 					return true;
 				}
@@ -126,21 +133,24 @@
 		}
 
 		$(document).ready(function(){
-			reload(1,1);
+			reload("1-2",1);
 			initSetSetup();
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 			var lesson = 1;
 			var set = 1;
 			$(".link-lesson").click(function(){
 				lesson = parseInt($(this).attr('id').replace(/link-lesson-/,""));
-				var numInWords = ["One",'Two','Three','Four','Five','Six','Seven','Eight','Nine']
+				console.log(lesson);
+				var numInWords = ["1-2","3","4-5","6","Binary","7","8","9","10","11","12","13-14","15","16"];
 				$("#lessonNum").html(numInWords[lesson-1]);
-				reload(lesson,1);
+				reload(numInWords[lesson-1],1);
 				var panels_content = "";
 				var counter = 1;
 
-				ref.child(""+lesson).on("value", function(snapshot) {
+				ref.child(""+numInWords[lesson-1]).once("value", function(snapshot) {
 					console.log(snapshot.numChildren());
+					if(snapshot.numChildren()==0)
+						toast('No problems for this lesson yet', 3000);
 					snapshot.forEach(function(childSnapshot){
 				  		panels_content+= '<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-'+counter+'" style="margin-left:5px"><span class="white-text" style="font-size:24px;" id="set-title">Set '+counter+'</span></div>';
 				  		if(counter >= snapshot.numChildren()){
@@ -149,7 +159,7 @@
 						$(".set-panel").click(function(){
 							set = parseInt($(this).attr('id').replace(/set-/,""));
 							console.log("hello");
-							reload(lesson,set);
+							reload(numInWords[lesson-1],set);
 						});
 
 						counter++;

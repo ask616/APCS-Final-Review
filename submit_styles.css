@@ -1,6 +1,5 @@
 body{
 	background-color: #e0e0e0;
-	overflow: hidden;
 }
 
 .container{
@@ -73,4 +72,32 @@ body{
 #scrollbar::-webkit-scrollbar-thumb
 {
 	background-color: #000000;
+}
+
+.dropdown-content li{
+	padding:0.5rem;
+	font-style: 1rem;
+}
+
+#page-title{
+	font-weight: 300;
+	font-family: "Roboto"
+}
+
+.modal_close:hover{
+	color: white;
+}
+
+.modal_close{
+	text-decoration: none;
+}
+
+.modal-trigger{
+	color: #757575;
+	text-decoration: none;
+}
+
+.modal-trigger:hover{
+	color: #757575;
+	text-decoration: none;
 }
