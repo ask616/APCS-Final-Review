@@ -29,11 +29,11 @@
 		</div>
 
 		<div class="form-buttons">
-			<button class="btn waves-effect waves-light form-button pull-right problem-add" type="submit" name="action"> Authorize
+			<button class="btn waves-effect waves-light form-button pull-right problem-add" id="authorize" type="submit" name="action"> Authorize
 				<i class="mdi-content-add right"></i>
 			</button>
 		</div>
-
+<!--
 		<div class="row">
 	    <form class="col s12">
 	      <div class="row">
@@ -71,7 +71,7 @@
 	  </div>
 	        
 	  <a class="waves-effect waves-light btn-large"><i class="mdi-file-cloud right"></i>Save Problem 2</a>
-
+-->
 	  <br> 
 
 	  <button class="btn waves-effect waves-light" type="submit" name="action">Resubmit All Problems
@@ -92,7 +92,25 @@
 
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 			
-			
+			$("#authorize").click(function(){
+				ref.child(""+1).on("value", function(snapshot) {
+					console.log(snapshot.numChildren());
+					snapshot.forEach(function(childSnapshot){
+				  		panels_content+= '<div> Hello </div>';
+				  		if(counter >= snapshot.numChildren()){
+							$(".panels").html(panels_content);
+						}
+						$(".set-panel").click(function(){
+							set = parseInt($(this).attr('id').replace(/set-/,""));
+							console.log("hello");
+							reload(lesson,set);
+						});
+
+						counter++;
+					});
+				});
+			});
+
 
 		});
 
