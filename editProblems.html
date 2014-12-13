@@ -33,6 +33,10 @@
 				<i class="mdi-content-add right"></i>
 			</button>
 		</div>
+
+		<div id="panels">
+
+		</div>
 <!--
 		<div class="row">
 	    <form class="col s12">
@@ -90,25 +94,28 @@
 		$(document).ready(function(){
 			var counter = 1;
 
+			var panels_content = "";
+
 			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 			
 			$("#authorize").click(function(){
-				ref.child(""+1).on("value", function(snapshot) {
+				ref.child("1-2").on("value", function(snapshot) {
 					console.log(snapshot.numChildren());
+
 					snapshot.forEach(function(childSnapshot){
-				  		panels_content+= '<div> Hello </div>';
+
+				  		panels_content+= '<div class="row"><form class="col s12"><div class="row"><div class="input-field col s12"><textarea></textarea><label> Problem ' + childSnapshot.child(1).val() + '</label></div></div><div class="row"><div class="input-field col s12"><textarea></textarea><label>Answer ' + "2" + '</label></div></div></form></div>';
 				  		if(counter >= snapshot.numChildren()){
-							$(".panels").html(panels_content);
+							$("#panels").html(panels_content);
 						}
 						$(".set-panel").click(function(){
 							set = parseInt($(this).attr('id').replace(/set-/,""));
-							console.log("hello");
-							reload(lesson,set);
+							reload(1,set);
 						});
-
 						counter++;
 					});
 				});
+
 			});
 
 
