@@ -72,7 +72,6 @@
 				var counter = 1;
 
 				ref.child("1-2").once("value", function(snapshot) {
-					//console.log(snapshot.numChildren());
 					snapshot.forEach(function(childSnapshot){
 				  		panels_content+= '<div class="card-panel grey waves-effect waves-light text-center darken-3 set-panel" id="set-'+counter+'" style="margin-left:5px"><span class="white-text" style="font-size:24px;" id="set-title">Set '+counter+'</span></div>';
 				  		if(counter >= snapshot.numChildren()){
@@ -90,8 +89,6 @@
 
 
 		function reload(lesson,set){
-
-			//var newRef = new Firebase("https://apcsfinalreview.firebaseio.com/"+lesson+"/"+set);
 			var newRef = ref.child(lesson).child(set);
 			newRef.once("value",function(basedSnapshot){
 				newContent = '<div style="margin-top:50px;padding-bottom:30px;"><h2 class="header-text" style="padding-bottom:30px;padding-top:30px;display:inline">Set ' + set+ ' </h2><h5 style="display:inline;color:#bdbdbd">by '+basedSnapshot.child("name").val() + '</h5></div>';
@@ -187,7 +184,6 @@
 			    }
 			}
 
-			//alert(closeImageReplaced);
 			return closeImageReplaced;
 		}
 
@@ -243,21 +239,9 @@
 								});
 							});
 
-
-
-
-
-
-
-
-
-
-
 					    });
 
 					    $(".problem-add").click(function(){
-
-					    	//'<div class=problem><div class=title><h5 class="header-text subheader">Problem ' + counter + '</h5></div><br><br><br><textarea id="problem-' + counter +'">'+childSnapshot.child(0).val()+'</textarea><br><br><a class="waves-effect waves-light btn answer-show" id="answer-'+counter+'" style=text-decoration:none>Edit Answer</a><br><textarea id="pre-'+counter+'" style=display:none;font-size:12px>'+childSnapshot.child(1).val()+'</textarea></div>';
 
 					    	$('.problem-section').append('<div class=problem-submission><div class=row><h5>Problem '+(counter)+'</h5><br><div class="input-field col s12"><textarea id=problem-'+(counter)+'></textarea><label>Write your problem here <a class="problem-modal-trigger modal-trigger" href="#problem-modal">(?)</a>:</label></div></div><div class=row><div class="input-field col s12"><textarea id=pre-'+(counter)+'></textarea><label>Enter your solution here (Enter tabs as 4 spaces) <a class="solution-modal-trigger modal-trigger" href="#solution-modal">(?)</a>:</label></div></div></div>');
 					    	counter++;
