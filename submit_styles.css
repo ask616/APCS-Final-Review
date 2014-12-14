@@ -101,3 +101,7 @@ body{
 	color: #757575;
 	text-decoration: none;
 }
+
+.problem-add:focused{
+	color: white;
+}

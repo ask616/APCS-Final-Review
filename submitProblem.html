@@ -57,6 +57,7 @@
 							<option value="13-14"><a href="#">13 to 14</a></option>
 							<option value="15"><a href="#">15</a></option>
 							<option value='16'><a href="#">16</a></option>
+							<option value='test'><a href="#">test</a></option>
 						</select>
 					</div>
 				</div>
@@ -87,7 +88,6 @@
 		<div class="form-buttons">
 
 			<a class="waves-effect waves-light btn modal-trigger submit-button submit-modal-trigger" style="color:white" href="#submitted-modal">Submit<i class="mdi-content-send right"></i></a>
-			<!-- <a class="waves-effect waves-light btn answer-show modal-trigger submit-button" style="color:white" id="answer-'+counter+'" style=text-decoration:none>Show Answer</a> -->
 			<button class="btn waves-effect waves-light form-button pull-right problem-add" type="submit" name="action">Add Problem
 				<i class="mdi-content-add right"></i>
 			</button>
@@ -127,20 +127,18 @@
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
 	<script src="https://cdn.firebase.com/js/client/2.0.6/firebase.js"></script>
 	<script type="text/javascript">
+		var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 		$(document).ready(function(){
 			$('.problem-modal-trigger,.solution-modal-trigger').leanModal();
 			$('.submit-modal-trigger').leanModal();
 
 			var counter = 1;
 
-			var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
-
 			$(".problem-add").click(function(){
 				
 				$('.problems').append('<div class=problem-submission><div class=row><h5>Problem '+(counter+1)+'</h5><br><div class="input-field col s12"><textarea id=problem-input'+(counter+1)+'></textarea><label>Write your problem here <a class="problem-modal-trigger modal-trigger" href="#problem-modal">(?)</a>:</label></div></div><div class=row><div class="input-field col s12"><textarea id=solution-input'+(counter+1)+'></textarea><label>Enter your solution here (Enter tabs as 4 spaces) <a class="solution-modal-trigger modal-trigger" href="#solution-modal">(?)</a>:</label></div></div></div>');
 				counter++;
 				$('.problem-modal-trigger,.solution-modal-trigger').leanModal();
-				//console.log($("#code-test1").prop('checked'));
 			});
 			$(".submit-button").click(function(){
 				var code = "";
@@ -150,7 +148,6 @@
 					code += chars[Math.round(Math.random() * (chars.length - 1))];
 
 				var lesson = $("#lesson_select").val().trim();
-				var ref = new Firebase("https://apcsfinalreview.firebaseio.com/");
 				var set;
 
 				$("#code").html(code);
@@ -160,7 +157,7 @@
 					var problems = [];
 					for(var i=0;i<counter;i++){
 						//[problem,solution]
-						var tuple = [imageParse($("#problem-input"+(i+1)).val().trim()),parse($("#solution-input"+(i+1)).val().trim())];
+						var tuple = [imageParse($("#problem-input"+(i+1)).val()),parse($("#solution-input"+(i+1)).val())];
 						problems.push(tuple);
 					}
 
@@ -187,15 +184,49 @@
 		});
 
 		function parse(origString){
-			var newLinesRemoved = origString.trim().replace(/\n/g, "&#10;");
-			var tabsReplaced = newLinesRemoved.replace(/\s{4}/g,"&#9;").replace(/\t/g,"&#9;");
+			var newLinesRemoved = origString.replace(/\n/g, "&#10;");
+			var tabsReplaced = newLinesRemoved.replace(/ {4}/g,"&#9;").replace(/\t/g,"&#9;");
+			
+			for(var i=0;i<tabsReplaced.length;i++){
+			    if(tabsReplaced.charAt(i)=='<' && tabsReplaced.charAt(i+1)!=" "){
+			        if(tabsReplaced.substring(i+1,i+4)!="img" && tabsReplaced.substring(i+1,i+5)!="/img"){
+			            tabsReplaced=  tabsReplaced.substr(0, i) + "&lt;" + tabsReplaced.substr(i + 1);
+			        }
+			    }
+			}
+
+			for(var i=1;i<tabsReplaced.length;i++){
+			    if(tabsReplaced.charAt(i)=='>' && tabsReplaced.charAt(i-1)!=" "){
+			        if(tabsReplaced.charAt(i-1) !="/"){
+			            tabsReplaced= tabsReplaced.substr(0, i) + "&gt;" +  tabsReplaced.substr(i + 1);
+			        }
+			    }
+			}
 
 			return tabsReplaced;
 		}
 
 		function imageParse(origString){
-			var openImageReplaced= origString.trim().replace(/<img>/g,"<img width=\"400px\" src=\"")
+			var openImageReplaced= origString.replace(/<img>/g,"<img width=\"400px\" src=\"")
 			var closeImageReplaced = openImageReplaced.replace(/<\/img>/g,"\" />");
+
+
+			for(var i=0;i<closeImageReplaced.length;i++){
+			    if(closeImageReplaced.charAt(i)=='<' && closeImageReplaced.charAt(i+1)!=" "){
+			        if(closeImageReplaced.substring(i+1,i+4)!="img" && closeImageReplaced.substring(i+1,i+5)!="/img"){
+			            closeImageReplaced=  closeImageReplaced.substr(0, i) + "&lt;" + closeImageReplaced.substr(i + 1);
+			        }
+			    }
+			}
+
+			for(var i=1;i<closeImageReplaced.length;i++){
+			    if(closeImageReplaced.charAt(i)=='>' && closeImageReplaced.charAt(i-1)!=" "){
+			        if(closeImageReplaced.charAt(i-1) !="/"){
+			            closeImageReplaced= closeImageReplaced.substr(0, i) + "&gt;" +  closeImageReplaced.substr(i + 1);
+			        }
+			    }
+			}
+
 
 			return closeImageReplaced;
 		}
