@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>APCS Final Review</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="libs/mdl/material.min.css"  media="screen"/>
+    <link rel="stylesheet" href="new-submit-styles.css">
+</head>
+
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-color--teal-400">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Problem Submission Form</span>
+                <div class="mdl-layout-spacer"></div>
+                <a class="mdl-navigation__link" href="/">Return</a>
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <div class="mdl-grid">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+                        <div class="mdl-card__supporting-text">
+                            <h4 class="mdl-color-text--blue-grey-700">Directions</h4>
+                            Fill out the following information and click <b>Submit</b> to add your problems. If you want to submit multiple problems for the same set, click <b>Add Problem</b>.
+
+                            <h6 class="mdl-color-text--blue-grey-700">Adding Problems</h6>
+                            Simply type in your problems into the textboxes below-keep in mind that how you format them here will be exactly how they'll show up on the viewing page. To add an image, just type in the direct link to the image surrounded by "img" tags as follows:
+                            <pre style="display:inline-block">&lt;img&gt;http://i.imgur.com/uEVSYHY.png&lt;/img&gt;</pre>
+                            <br>
+                            While adding code, try to stick with using either 4 spaces in a row or pasting in tabs (you'll see that you can't press the tab key while filling out this form), and the indentation should be preserved.
+
+                            <h6 class="mdl-color-text--blue-grey-700">Adding Solutions</h6>
+                            The same rules for adding problems apply, but you won't be able to paste in images for this section. Again, if you're pasting code, stick to either 4 spaces or pasting tabs, as these are the only ways that are being covered for indentation. After submitting, you'll be given a 4-character alphanumeric password that you'll need to later be able to edit submissions.
+                        </div>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+
+                <div class="mdl-grid">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+                        <div class="mdl-card__supporting-text">
+                            <h4 class="mdl-color-text--blue-grey-700">Basic Info</h4>
+                        </div>
+
+                        <div class="mdl-grid">
+
+                            <div class="mdl-cell mdl-cell--12-col-desktop">
+                                <div class="name-field mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                  <input class="mdl-textfield__input" type="text" id="name-input">
+                                  <label class="mdl-textfield__label" for="sample3">Name</label>
+                                </div>
+                            </div>
+
+
+                            <div class="mdl-cell mdl-cell--12-col-desktop">
+                                <h6 class="mdl-color-text--blue-grey-900">Choose Lesson:</h6>
+
+                                <div id="lesson-choice-buttons">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+
+
+                <div id="problems-wrapper">
+
+                    <div class="mdl-grid">
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+                            <div class="mdl-card__supporting-text">
+                                <h4 class="mdl-color-text--blue-grey-700">Problem 1</h4>
+                            </div>
+
+                            <div class="mdl-grid">
+
+                                <div class="mdl-cell mdl-cell--12-col-desktop">
+
+                                    <div class="problem-field problem-0-field mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <textarea class="mdl-textfield__input" type="text" rows= "6" id="problem-0-input" ></textarea>
+                                        <label class="mdl-textfield__label">Write your problem here:</label>
+                                      </div>
+                                </div>
+                                <div class="mdl-cell mdl-cell--12-col-desktop">
+                                    <div class="solution-field solution-0-field mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <textarea class="mdl-textfield__input" type="text" rows= "6" id="solution-0-input" ></textarea>
+                                        <label class="mdl-textfield__label">Enter your solution here (Enter tabs as 4 spaces):</label>
+                                      </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="mdl-layout-spacer"></div>
+                    </div>
+
+
+                </div>
+
+                <div class="mdl-grid">
+                    <div class="mdl-layout-spacer"></div>
+                    <div class="form-controls-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
+
+                        <div class="mdl-card__actions mdl-card--border mdl-color--teal-400">
+                            <a href="#" class="submit-problems-btn mdl-button mdl-js-button mdl-js-ripple-effect">Submit</a>
+                            <a href="#" class="add-problem-btn mdl-button mdl-js-button mdl-js-ripple-effect">Add Problem</a>
+                        </div>
+                    </div>
+                    <div class="mdl-layout-spacer"></div>
+                </div>
+
+
+            </div>
+        </main>
+    </div>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="libs/mdl/material.min.js"></script>
+    <script src="https://www.parsecdn.com/js/parse-1.6.7.min.js"></script>
+
+
+    <script>
+
+
+    $(document).ready(function(){
+        var problemNum = 1;
+        function newProblemField(problemNum){
+            var newProblem = document.createElement('div');
+            newProblem.className = 'mdl-grid';
+            var processed = problemPreProcessed.split("$(problemNumPlusOne)").join(problemNum+1).split("$(problemNum)").join(problemNum);
+            newProblem.innerHTML = processed;
+
+            var questionField = document.createElement('div');
+            var questionClasses = 'problem-field problem-$(problemNum)-field mdl-textfield mdl-js-textfield mdl-textfield--floating-label'.split("$(problemNum)").join(problemNum);
+            questionField.className = questionClasses;
+            var questionContent = '<textarea class="mdl-textfield__input" type="text" rows="6" id="problem-$(problemNum)-input"></textarea><label class="mdl-textfield__label">Write your problem here:</label>'.split("$(problemNum)").join(problemNum);
+
+            var solutionField = document.createElement('div');
+            var solutionClasses = 'solution-field solution-$(problemNum)-field mdl-textfield mdl-js-textfield mdl-textfield--floating-label'.split("$(problemNum)").join(problemNum);
+            solutionField.className = solutionClasses;
+            var solutionContent = '<textarea class="mdl-textfield__input" type="text" rows="6" id="solution-$(problemNum)-input"></textarea><label class="mdl-textfield__label">Enter your solution here (Enter tabs as 4 spaces):</label>'.split("$(problemNum)").join(problemNum);
+
+            questionField.innerHTML = questionContent;
+            componentHandler.upgradeElement(questionField);
+            solutionField.innerHTML = solutionContent;
+            componentHandler.upgradeElement(solutionField);
+
+            document.getElementById('problems-wrapper').appendChild(newProblem);
+
+            document.getElementById('problem-' + problemNum + '-content').appendChild(questionField);
+            document.getElementById('solution-' + problemNum + '-content').appendChild(solutionField);
+        }
+
+
+        function getLessonData(lessonList){
+            lessonNames = [];
+            for(var i = 0; i < lessonList.length; i++){
+                lessonNames.push(lessonList[i].lessonName)
+            }
+            return lessonNames;
+        }
+
+
+        Parse.initialize("gV7nKoiPMnEPz2WAvVNdlLnIE3rdMGCVTywuGxhg", "9pxUUwLlmOdB9C54yxvYH38c7YVtNvWYyMbNoPjS");
+
+        var LessonsListClass = Parse.Object.extend("LessonsList");
+        var lessonsListQuery = new Parse.Query(LessonsListClass);
+
+        lessonsListQuery.get("iyb8zsKB5i", {
+            success: function(lessonsList) {
+                lessonsList = lessonsList.get("lessons")
+                // var lessonNames = getLessonNames(lessonsList);
+                var btns = '<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1"> <input type="radio" id="option-$(lessonNum)" class="mdl-radio__button" name="options" value="$(lessonId)" $(checked)> <span class="mdl-radio__label mdl-card__supporting-text lesson-title">$(lessonName)</span> </label>';
+
+                for(var i = 0; i < lessonsList.length; i++){
+                    var lessonName = lessonsList[i].lessonName;
+                    var lessonId = lessonsList[i].lessonId;
+
+                    var processed = btns.split("$(lessonNum)").join(i);
+                    processed = processed.split("$(lessonId)").join(lessonId);
+                    processed = processed.split("$(lessonName)").join(lessonName);
+                    if(i == 0){
+                        processed = processed.split("$(checked)").join("checked");
+                    } else {
+                        processed = processed.split("$(checked)").join("");
+                    }
+                    $("#lesson-choice-buttons").append(processed);
+                }
+
+                // $("#lesson-choice-buttons").html(btns);
+            },
+            error: function(object, error) {
+                console.log(error)
+            }
+        });
+
+        function parse(origString){
+            var newLinesRemoved = origString.replace(/\n/g, "&#10;");
+            var tabsReplaced = newLinesRemoved.replace(/ {4}/g,"&#9;").replace(/\t/g,"&#9;");
+
+            for(var i=0;i<tabsReplaced.length;i++){
+                if(tabsReplaced.charAt(i)=='<' && tabsReplaced.charAt(i+1)!=" "){
+                    if(tabsReplaced.substring(i+1,i+4)!="img" && tabsReplaced.substring(i+1,i+5)!="/img"){
+                        tabsReplaced=  tabsReplaced.substr(0, i) + "&lt;" + tabsReplaced.substr(i + 1);
+                    }
+                }
+            }
+
+            for(var i=1;i<tabsReplaced.length;i++){
+                if(tabsReplaced.charAt(i)=='>' && tabsReplaced.charAt(i-1)!=" "){
+                    if(tabsReplaced.charAt(i-1) !="/"){
+                        tabsReplaced= tabsReplaced.substr(0, i) + "&gt;" +  tabsReplaced.substr(i + 1);
+                    }
+                }
+            }
+
+            return tabsReplaced;
+        }
+
+        function imageParse(origString){
+            var openImageReplaced= origString.replace(/<img>/g,"<img width=\"400px\" src=\"")
+            var closeImageReplaced = openImageReplaced.replace(/<\/img>/g,"\" />");
+
+
+            for(var i=0;i<closeImageReplaced.length;i++){
+                if(closeImageReplaced.charAt(i)=='<' && closeImageReplaced.charAt(i+1)!=" "){
+                    if(closeImageReplaced.substring(i+1,i+4)!="img" && closeImageReplaced.substring(i+1,i+5)!="/img"){
+                        closeImageReplaced=  closeImageReplaced.substr(0, i) + "&lt;" + closeImageReplaced.substr(i + 1);
+                    }
+                }
+            }
+
+            for(var i=1;i<closeImageReplaced.length;i++){
+                if(closeImageReplaced.charAt(i)=='>' && closeImageReplaced.charAt(i-1)!=" "){
+                    if(closeImageReplaced.charAt(i-1) !="/"){
+                        closeImageReplaced= closeImageReplaced.substr(0, i) + "&gt;" +  closeImageReplaced.substr(i + 1);
+                    }
+                }
+            }
+
+            return closeImageReplaced;
+        }
+
+        $('.submit-problems-btn').click(function(){
+            var name = $("#name-input").val().trim();
+            var lessonId = $("#lesson-choice-buttons input[type=radio]:checked").val().trim();
+
+            var code = "";
+            var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+            for (var j = 0; j < 4; j++)
+                code += chars[Math.round(Math.random() * (chars.length - 1))];
+
+            var problems = [];
+
+            for(var i = 0; i < problemNum; i++){
+                var questionText = $("#problem-" + i + "-input").val();
+                var solutionText = $("#solution-" + i + "-input").val();
+
+                if(questionText.trim().length == 0 && solutionText.trim().length == 0){
+                    continue;
+                } else {
+                    var newProblem = {
+                        "question" : imageParse($("#problem-" + i + "-input").val()),
+                        "solution" : parse($("#solution-" + i + "-input").val())
+                    }
+
+                    problems.push(newProblem);
+                }
+            }
+
+            var newSet = {
+                "code" : code,
+                "name" : name,
+                "problems" : problems
+            }
+
+            var LessonClass = Parse.Object.extend("Lesson");
+            var lessonQuery = new Parse.Query(LessonClass);
+
+            lessonQuery.get(lessonId, {
+                success: function(lesson) {
+                    lesson.add("sets", newSet);
+                    lesson.save(null, {
+                        success: function(newSet) {
+                            alert("Your work has been submitted. If you want to edit it later on, you'll need the code below to do so, so store it somewhere safe.\n\nCode: " + code);
+                            $(location).attr('href','/');
+                        },
+                        error: function(newSet, error) {
+                            alert('Failed to save, with error code: ' + error.message);
+                        }
+                    });
+                },
+                error: function(object, error) {
+                    alert(error.message);
+                }
+            });
+        });
+
+        var problemPreProcessed = '<div class="mdl-layout-spacer"></div><div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone"> <div class="mdl-card__supporting-text"> <h4 class="mdl-color-text--blue-grey-700">Problem $(problemNumPlusOne)</h4> </div><div class="mdl-grid"> <div class="mdl-cell mdl-cell--12-col-desktop" id="problem-$(problemNum)-content"></div><div class="mdl-cell mdl-cell--12-col-desktop" id="solution-$(problemNum)-content"></div></div></div><div class="mdl-layout-spacer">';
+
+        $('.add-problem-btn').click(function(){
+            newProblemField(problemNum);
+            problemNum++;
+        });
+    });
+
+
+    </script>
+
+
+</body>
+
+</html>

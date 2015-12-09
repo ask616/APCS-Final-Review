@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>APCS Final Review</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="libs/mdl/material.min.css"  media="screen"/>
+    <link rel="stylesheet" href="new_styles.css">
+</head>
+
+
+<body>
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-color--teal-400">
+            <div class="mdl-layout__header-row">
+                <div class="mdl-layout-spacer"></div>
+                <a class="mdl-navigation__link" href="/">Submit Problem</a>
+                <a class="mdl-navigation__link section-title" id="hdrbtn">Lesson <i class="fa fa-chevron-down"></i></a>
+                <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right section-menu" for="hdrbtn">
+                </ul>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+            <span class="mdl-layout-title drawer-title">APCS Review</span>
+            <nav class="mdl-navigation nav-sets">
+            </nav>
+        </div>
+        <main class="mdl-layout__content">
+            <div class="page-content">
+
+                <div class="mdl-grid">
+                    <p class="set-title" id="set-title">Set <span id="set-num">1</span><span id="set-subtitle"> by <span class="set-author">Eric Ferrante</span></span></p>
+                </div>
+
+                <div id="problems">
+                </div>
+
+                <div class="mdl-grid">
+                    <a href="#" class="edit-problems-btn mdl-button mdl-js-button mdl-js-ripple-effect mdl-color--teal-300 mdl-color-text--white">Edit Problems</a>
+                </div>
+
+
+
+            </div>
+        </main>
+    </div>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="libs/mdl/material.min.js"></script>
+    <script src="https://www.parsecdn.com/js/parse-1.6.7.min.js"></script>
+
+    <script>
+
+
+    $(document).ready(function(){
+        Parse.initialize("gV7nKoiPMnEPz2WAvVNdlLnIE3rdMGCVTywuGxhg", "9pxUUwLlmOdB9C54yxvYH38c7YVtNvWYyMbNoPjS");
+
+        function answerButtonListener(){
+            $(".show-answer-btn").click(function(e){
+                console.log(e.target.parentNode.id);
+
+                var problemNum = e.target.parentNode.id.replace("show-answer-", "");
+
+                $(".problem-" + problemNum + "-solution").slideToggle();
+            });
+
+        }
+
+        function getLessonNames(lessonList){
+            lessonNames = [];
+            for(var i = 0; i < lessonList.length; i++){
+                lessonNames.push(lessonList[i].lessonName)
+            }
+            return lessonNames;
+        }
+
+        function getLessonIds(lessonList){
+            lessonIds = [];
+            for(var i = 0; i < lessonList.length; i++){
+                lessonIds.push(lessonList[i].lessonId)
+            }
+            return lessonIds;
+        }
+
+        function setLinkListeners(sets){
+            $(".set-link").click(function(e){
+                var clickedSet = parseInt(e.target.id.replace("set-",""));
+                console.log(clickedSet)
+                $("#set-num").html(clickedSet+1);
+                $("#problems").html("");
+                loadProblems(sets, clickedSet);
+            });
+        }
+
+        function buildProblem(problemText, solutionText, problemNum){
+            var problemPreProcessed = '<div class="problem-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop"> <div class="card-head mdl-card__title mdl-card--expand mdl-color--teal-300"> <h2 class="mdl-card__title-text mdl-color-text--grey-50">Problem $(problemNumPlusOne)</h2> </div> <div class="mdl-card__supporting-text mdl-color-text--grey-600"> <div class="problem-$(problemNum)-text"> $(problemText) <div class="problem-$(problemNum)-solution solution-text"> <pre>$(solutionText)</pre> </div> </div> </div> <div class="mdl-card__actions mdl-card--border"> <div id="problem-$(problemNum)-button-wrapper"> </div> </div> </div>';
+            var newProblem = document.createElement('div');
+            newProblem.className = 'mdl-grid';
+            var processed = problemPreProcessed.split("$(problemNumPlusOne)").join(problemNum+1).split("$(problemNum)").join(problemNum);
+            processed = processed.split("$(problemText)").join(problemText).split("$(solutionText)").join(solutionText);
+            newProblem.innerHTML = processed;
+
+
+            var showAnswerButton = document.createElement('a');
+            showAnswerButton.id = "show-answer-" + problemNum;
+            showAnswerButton.className = 'show-answer-btn mdl-button mdl-js-button mdl-js-ripple-effect';
+            showAnswerButton.innerHTML = 'Show Answer';
+
+            componentHandler.upgradeElement(showAnswerButton);
+
+            document.getElementById('problems').appendChild(newProblem);
+            document.getElementById('problem-' + problemNum + '-button-wrapper').appendChild(showAnswerButton);
+        }
+
+        function loadProblems(sets, setNum){
+            var set = sets[setNum];
+            $('.set-author').html(set.name);
+            $('.set-num').html(setNum+1);
+
+            var problems = set.problems;
+
+            for(var i = 0; i < problems.length; i++){
+                buildProblem(problems[i].question, problems[i].solution, i);
+            }
+            answerButtonListener();
+
+        }
+
+        // Get list of sets for side nav
+        function loadSets(lessonId){
+            var LessonClass = Parse.Object.extend("Lesson");
+            var lessonQuery = new Parse.Query(LessonClass);
+
+            lessonQuery.get(lessonId, {
+                success: function(lesson) {
+                    var sets = lesson.get("sets");
+                    console.log(sets);
+                    if(sets.length == 0){
+                        $("#set-title").html("No problems here yet!");
+                        $(".edit-problems-btn").hide();
+                    } else {
+                        var preText = '<a class="mdl-navigation__link set-link" id="set-';
+                        for(var i = 0; i < sets.length; i++){
+                            $('.nav-sets').append(preText + i + '"> Set ' + (i+1) + '</a>');
+                        }
+                        loadProblems(sets, 0);
+                        setLinkListeners(sets);
+                    }
+
+                },
+                error: function(object, error) {
+                    console.log(error)
+                }
+            });
+        }
+
+
+        var LessonsListClass = Parse.Object.extend("LessonsList");
+        var lessonsListQuery = new Parse.Query(LessonsListClass);
+
+        lessonsListQuery.get("iyb8zsKB5i", {
+            success: function(lessonsList) {
+                // Populate section nav at top right
+                lessonsList = lessonsList.get("lessons")
+                var lessonNames = getLessonNames(lessonsList);
+
+                // Get parameter if exists
+                var captured = /i=([^&]+)/.exec(window.location.href);
+                var result = captured ? captured[1] : 0;
+                result = parseInt(result);
+                console.log(result)
+
+                var preText = ' <i class="fa fa-chevron-down"></i>'
+                $('.section-title').html('Lesson ' + lessonNames[result] + preText);
+
+                for(var i = 0; i < lessonNames.length; i++){
+                    var sectionEntry = '<li class="mdl-menu__item lesson-link" id="link-' + i + '">Lesson ' + lessonNames[i] + '</li>';
+                    $('.section-menu').append(sectionEntry);
+                }
+
+                $(".lesson-link").click(function(e){
+                    var id = e.target.id.replace("link-", "");
+                    // console.log(window.location.href + '/?i='+id);
+                    $(location).attr('href','/?i='+id);
+                });
+
+                var lessonIds = getLessonIds(lessonsList);
+
+                loadSets(lessonIds[result]);
+
+            },
+            error: function(object, error) {
+                console.log(error)
+            }
+        });
+
+
+    });
+
+
+    </script>
+
+
+</body>
+
+</html>

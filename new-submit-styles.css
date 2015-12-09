@@ -1,0 +1,30 @@
+.name-field{
+    width: 100%;
+}
+
+.problem-field{
+    width: 100%;
+}
+
+.solution-field{
+    width: 100%;
+}
+
+.mdl-card__actions a {
+  color: #00BCD4;
+  text-decoration: none;
+}
+
+.form-controls-card{
+    min-height: 0px!important;
+}
+
+.form-controls-card .mdl-card__actions a {
+  color: white;
+  text-decoration: none;
+}
+
+.lesson-title{
+    position: relative;
+    left: -10px!important;
+}
