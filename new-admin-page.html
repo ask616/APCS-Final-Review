@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="stylesheets/new-admin-styles.css">
 </head>
 
-
 <body>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <header class="mdl-layout__header mdl-color--teal-400">
@@ -29,11 +28,11 @@
                             <br><br>
                             In order to perform any operation, input password into the textbox below and then continue as follows:
                             <br><br>
-                            To <b>add</b> a lesson, click the <b>Add Lesson</b> button and fill in the prompt.
+                            To <b>add</b> a lesson, click the <b>Add Lesson</b> button and fill in the prompt. <b>Make sure that you do not repeat a lesson name twice. This will cause unexpected behavior.</b>
                             <br>
-                            To <b>remove</b> one or more lessons, check them off in the table and then click the <b>Remove Lesson(s)</b> button.
+                            To <b>remove</b> one or more lessons, check them off in the table and then click the <b>Remove Lesson(s)</b> button. This will remove the category itself.
                             <br><br>
-                            To empty the database, scroll to the bottom and hit the <b>Empty Database</b> button.
+                            To empty the database, scroll to the bottom and hit the <b>Empty Database</b> button. This will keep all current lessons, but delete any student submissions.
                             <br>
                             To enable/disable access to the site, click the <b>Enable Access</b> or <b>Disable Access</b> button.
                             <br><br>
@@ -75,8 +74,6 @@
                     <div class="mdl-layout-spacer"></div>
                 </div>
 
-
-
                 <div class="mdl-grid">
                     <div class="mdl-layout-spacer"></div>
                     <div class="controls-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
@@ -95,265 +92,10 @@
         </main>
     </div>
 
-
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="libs/mdl/material.min.js"></script>
     <script src="https://www.parsecdn.com/js/parse-1.6.7.min.js"></script>
-
-
-    <script>
-
-    $(document).ready(function(){
-
-        function validatePassword(){
-            return $("#pw").val() == '<%=password%>';
-        }
-
-        function getLessonNames(lessonList){
-            lessonNames = [];
-            for(var i = 0; i < lessonList.length; i++){
-                lessonNames.push(lessonList[i].lessonName)
-            }
-            return lessonNames;
-        }
-
-
-        Parse.initialize("gV7nKoiPMnEPz2WAvVNdlLnIE3rdMGCVTywuGxhg", "9pxUUwLlmOdB9C54yxvYH38c7YVtNvWYyMbNoPjS");
-
-        var LessonsListClass = Parse.Object.extend("LessonsList");
-        var LessonClass = Parse.Object.extend("Lesson");
-
-        var lessonsListQuery = new Parse.Query(LessonsListClass);
-
-        lessonsListQuery.get("iyb8zsKB5i", {
-            success: function(lessonsList) {
-                var enabled = lessonsList.get("access");
-                if(enabled){
-                    $("#enable-access-btn").hide();
-                } else {
-                    $("#disable-access-btn").hide();
-                }
-
-                lessonsList = lessonsList.get("lessons");
-
-
-                var lessonNames = getLessonNames(lessonsList);
-
-                if(lessonNames.length == 0){
-                    $("#lessons-table-wrapper").html('<div class="mdl-card__supporting-text">No lessons available.</div>');
-                    $("#remove-lessons-button").attr("disabled", true);
-                    $("#remove-lessons-button").addClass("mdl-color-text--grey-400");
-                } else {
-
-                    var table = document.createElement('table');
-                    table.className = "mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp lessons-table";
-
-                    var tableBody = "";
-                    for(var i = 0; i < lessonsList.length; i++){
-                        var lessonName = lessonNames[i];
-
-                        var preProcessed = '<tr id="$(lessonNum)"><td class="mdl-data-table__cell--non-numeric">$(lessonName)</td></tr>';
-
-                        var processed = preProcessed.split("$(lessonNum)").join(i);
-                        processed = processed.split("$(lessonName)").join(lessonName);
-
-                        tableBody += processed;
-
-                    }
-
-                    var tableBodyPreProcessed = '<thead><tr><th class="mdl-data-table__cell--non-numeric">Lesson Name</th></tr></thead><tbody>$(tableBody)</tbody>';
-                    tableBodyProcessed = tableBodyPreProcessed.split("$(tableBody)").join(tableBody);
-                    table.innerHTML = tableBodyProcessed;
-                    componentHandler.upgradeElement(table);
-                    $("#lessons-table-wrapper").html(table);
-
-                }
-
-            },
-            error: function(object, error) {
-                alert(error.message)
-            }
-        });
-
-        $(".access-button").click(function(e){
-
-            if(!validatePassword()){
-                alert("Incorrect password");
-                return;
-            }
-
-            var buttonType = e.target.parentNode.id.replace("-access-btn", "");
-            buttonType = (buttonType === 'enable');
-
-            var lessonsListQuery = new Parse.Query(LessonsListClass);
-
-            lessonsListQuery.get("iyb8zsKB5i", {
-                success: function(lessonsList) {
-                    lessonsList.set("access", buttonType)
-                    lessonsList.save(null, {
-                        success: function(obj){
-                            location.reload();
-                        },
-                        error: function(obj, error){
-                            alert(error.message);
-                        }
-                    });
-                },
-                error: function(obj, error){
-                    alert(error.message);
-                }
-            });
-
-        });
-
-        $("#add-lesson-button").click(function(){
-            if(!validatePassword()){
-                alert("Incorrect password");
-                return;
-            }
-            var newLessonName = prompt("Enter a name for the new lesson:");
-
-            if(newLessonName != null){
-                if(newLessonName.trim().length == 0){
-                    alert("Invalid lesson name");
-                } else {
-
-                    var newLesson = new LessonClass();
-                    newLesson.set("name", newLessonName);
-                    newLesson.set("sets", []);
-
-                    newLesson.save(null, {
-                        success: function(newLesson) {
-                            lessonsListQuery.get("iyb8zsKB5i", {
-                                success: function(lessonsList) {
-                                    var newLessonObj = {
-                                        "lessonId" : newLesson.id,
-                                        "lessonName" : newLessonName
-                                    }
-
-                                    lessonsList.add("lessons", newLessonObj);
-                                    lessonsList.save(null, {
-                                        success: function(newSet) {
-                                            location.reload();
-                                        },
-                                        error: function(newSet, error) {
-                                            alert('Failed to save: ' + error.message);
-                                        }
-                                    });
-
-                                }, error: function(object, error) {
-                                    alert(error)
-                                }
-                            });
-                        },
-                        error: function(newLesson, error) {
-                            alert(error.message)
-                        }
-
-                    });
-
-                }
-            }
-
-        });
-
-        $("#remove-lessons-button").click(function(){
-            if(!validatePassword()){
-                alert("Incorrect password");
-                return;
-            }
-            var selectedLessons = $(".is-selected");
-
-            if(selectedLessons.length == 0){
-                alert("No lessons selected");
-                return;
-            }
-
-            var confirmed = confirm("Are you sure you want to remove these lessons?");
-
-            if(!confirmed){
-                return;
-            }
-
-            var selectedIndices = [];
-            for(var i = 0; i < selectedLessons.length; i++){
-                selectedIndices.push(parseInt(selectedLessons[i].id));
-            }
-
-            lessonsListQuery.get("iyb8zsKB5i", {
-                success: function(lessonsList) {
-
-                    var lessonsArray = lessonsList.get("lessons");
-                    var lessonNames = [];
-
-                    for(var i = lessonsArray.length; i--;) {
-                        if(i == selectedIndices[selectedIndices.length-1]) {
-                            var currLesson = lessonsArray[i];
-                            lessonNames.push(currLesson.lessonName);
-
-                            lessonsArray.splice(i, 1);
-                            selectedIndices.pop();
-                        }
-                    }
-
-                    lessonsList.set("lessons", lessonsArray);
-
-                    lessonsList.save(null, {
-                        success: function(newSet) {
-
-                            var lessonQuery = new Parse.Query(LessonClass);
-                            lessonQuery.containedIn("name", lessonNames);
-                            lessonQuery.each(function(lesson) {
-                                return lesson.destroy();
-                            }).then(function() {
-                                location.reload();
-                            }, function(obj, error) {
-                                alert(error.message)
-                            });
-
-                        },
-                        error: function(newSet, error) {
-                            alert('Failed to update: ' + error.message);
-                        }
-                    });
-
-                }, error: function(object, error) {
-                    alert(error)
-                }
-            });
-
-        });
-
-
-        $("#clear-db-btn").click(function(){
-
-            if(!validatePassword()){
-                alert("Incorrect password");
-                return;
-            }
-
-            var confirmed = confirm("Are you sure you want to empty the database? The lessons will be preserved, but all student questions will be lost. Page will refresh on completion.")
-
-            if(!confirmed){
-                return;
-            }
-
-            var lessonQuery = new Parse.Query(LessonClass);
-            lessonQuery.each(function(lesson) {
-                lesson.set("sets", []);
-                return lesson.save();
-            }).then(function() {
-                location.reload();
-            }, function(error) {
-                alert(error.message);
-            });
-        });
-
-    });
-
-
-    </script>
-
+    <script type="text/javascript" src="javascripts/admin.js"></script>
 
 </body>
 
