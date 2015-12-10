@@ -167,7 +167,7 @@ $(document).ready(function(){
 
     // Extracts data from lesson list and adds radio buttons to form for lesson choice
     function addLessonOptions(lessonsList){
-        var btnTemplate = '<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1"> <input type="radio" id="option-$(lessonNum)" class="mdl-radio__button" name="options" value="$(lessonId)" $(checked)> <span class="mdl-radio__label mdl-card__supporting-text lesson-title">$(lessonName)</span> </label>';
+        var btnTemplate = '<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-$(lessonNum)"> <input type="radio" id="option-$(lessonNum)" class="mdl-radio__button" name="options" value="$(lessonId)" $(checked)> <span class="mdl-radio__label mdl-card__supporting-text lesson-title">$(lessonName)</span> </label>';
 
         // For each lesson in list, add a radio button for lesson choice
         for(var i = 0; i < lessonsList.length; i++){
