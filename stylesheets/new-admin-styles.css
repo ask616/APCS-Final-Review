@@ -1,0 +1,12 @@
+.controls-card{
+    min-height: 0px!important;
+}
+
+.controls-card .mdl-card__actions a {
+  color: white;
+  text-decoration: none;
+}
+
+.lessons-table{
+    width: 100%;
+}
