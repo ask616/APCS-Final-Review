@@ -141,22 +141,36 @@ $(document).ready(function(){
     }
 
     // Sets up a click listener for when user is done making edits
-    function setEditsSubmitListener(lesson, sets, currSet, setIndex){
+    function setEditsSubmitListener(lessonId, setIndex){
         $(".submit-edit-btn").click(function(){
             // Get the user input from problem fields
             var newProblems = getProblemInputs();
 
-            // Update the problems of the set with the updated ones
-            currSet.problems = newProblems;
-            // Update the list of all sets with this edited oen
-            sets[setIndex] = currSet;
-            lesson.set("sets", sets);
-            lesson.save(null, {
-                success: function(lesson){
-                    // Reset cookies
-                    document.cookie = "setIndex=; lessonId=; code=; codeResp=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-                    // On complete, return to home
-                    $(location).attr('href','/');
+            // Get latest data
+            lessonQuery.get(lessonId, {
+                success: function(lesson) {
+                    // Save set to lesson object
+                    var sets = lesson.get("sets");
+                    // Get the data for the set currently being edited
+                    var currSet = sets[setIndex];
+
+                    // Update the problems of the set with the updated ones
+                    currSet.problems = newProblems;
+                    // Update the list of all sets with this edited oen
+                    sets[setIndex] = currSet;
+                    lesson.set("sets", sets);
+
+                    lesson.save(null, {
+                        success: function(lesson){
+                            // Reset cookies
+                            document.cookie = "setIndex=; lessonId=; code=; codeResp=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+                            // On complete, return to home
+                            $(location).attr('href','/');
+                        },
+                        error: function(obj, error){
+                            alert(error.message);
+                        }
+                    });
                 },
                 error: function(obj, error){
                     alert(error.message);
@@ -266,7 +280,7 @@ $(document).ready(function(){
                             var currSet = sets[setIndex];
 
                             loadSavedProblems(lesson, currSet);
-                            setEditsSubmitListener(lesson, sets, currSet, setIndex);
+                            setEditsSubmitListener(getCookie("lessonId"), setIndex);
                         },
                         error : function(obj, error){
                             alert(error.message);
